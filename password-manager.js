@@ -1,3 +1,8 @@
+/**
+ * Password Generator and Organizer
+ * Version 1.2.0
+ */
+
 class PasswordGeneratorOrganizer {
   constructor() {
     this.passwords = {};
@@ -38,4 +43,24 @@ class PasswordGeneratorOrganizer {
   listAccounts() {
     return Object.keys(this.passwords);
   }
+
+  exportPasswordsToCSV() {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Account,Password\n";
+    for (const account in this.passwords) {
+      const password = this.passwords[account];
+      const row = `${account},${password}\n`;
+      csvContent += row;
+    }
+
+    const encodedURI = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedURI);
+    link.setAttribute("download", "passwords.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 }
+
+const passwordManager = new PasswordGeneratorOrganizer();
